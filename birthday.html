@@ -1,0 +1,452 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adebunmi mi — Happy Birthday</title>
+
+  <!-- Open Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --page-bg: #f0f2f4;      /* site background */
+      --section-bg: #e9ecef;   /* card-like section background */
+      --nav-bg: #0a3150;       /* navbar background (your choice) */
+      --accent: #0a3150;       /* accent / border */
+      --muted: #46505a;
+      --text: #203040;
+      --radius: 12px;
+      --container: 1100px;
+    }
+
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Open Sans', sans-serif;
+      background:var(--page-bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+      scroll-behavior:smooth;
+    }
+
+    .wrap{max-width:var(--container);margin:0 auto;padding:0 18px;}
+
+    /* NAVBAR (sticky) */
+    header.site-header{
+      position:sticky; top:0; z-index:999;
+      background:var(--nav-bg);
+      color:#fff;
+      box-shadow:0 6px 18px rgba(10,49,80,0.12);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:var(--container);margin:0 auto;padding:12px 18px}
+    .brand{font-weight:700;font-size:1.25rem;letter-spacing:0.2px}
+    .brand span{color:#f7c6d0} /* subtle pink tint for name */
+
+    /* full menu (desktop) */
+    nav.main-nav{display:flex;gap:12px;align-items:center}
+    nav.main-nav a{
+      color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;font-weight:600;font-size:0.95rem;
+    }
+    nav.main-nav a:hover{background:rgba(255,255,255,0.06)}
+
+    /* hamburger for mobile */
+    .hamburger{
+      display:none;
+      width:44px;height:44px;border-radius:8px;border:none;background:transparent;color:#fff;
+      align-items:center;justify-content:center;font-size:1.25rem;cursor:pointer;
+    }
+
+    /* Mobile menu drawer */
+    .mobile-menu{
+      display:none;
+      position:fixed;top:64px;right:14px;background:var(--nav-bg);color:#fff;border-radius:10px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+    .mobile-menu a{display:block;padding:10px 12px;color:#fff;text-decoration:none;border-radius:8px}
+    .mobile-menu a + a{margin-top:6px}
+    .mobile-menu a:hover{background:rgba(255,255,255,0.04)}
+
+    /* HERO */
+    .hero{padding:34px 0 28px}
+    .hero-inner{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+    .hero-title{font-size:2.6rem;color:var(--nav-bg);margin:0;font-weight:700}
+    .hero-sub{color:var(--muted);margin-top:8px;font-size:1.05rem}
+
+    .hero-photo{
+      width:100%;max-width:420px;border-radius:14px;overflow:hidden;border:6px solid rgba(10,49,80,0.06);box-shadow:0 20px 50px rgba(10,49,80,0.08);
+      background:#fff;
+    }
+    .hero-photo img{display:block;width:100%;height:100%;object-fit:cover}
+
+    /* SECTION CARD (About, Note, Poem, Things I Love) */
+    .section{
+      margin-top:20px;padding:22px;border-radius:var(--radius);
+      background:var(--section-bg);
+      border-left:6px solid var(--accent); /* contrasting hue bordering the section */
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    }
+    .section h2{margin:0 0 12px;color:var(--nav-bg);font-size:1.35rem}
+    .section p{margin:0;color:var(--text);font-size:1rem}
+
+    /* Things I love list */
+    .love-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+    .love-list li{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(10,49,80,0.04);font-weight:600;color:var(--muted)}
+
+    /* Gallery */
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .gallery-grid img{width:100%;height:200px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,0,0,0.04);cursor:pointer;display:block}
+
+    /* cards downloads */
+    .cards-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .card-download{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(10,49,80,0.06);display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--nav-bg);font-weight:700}
+
+    /* footer */
+    footer{margin:34px 0 70px;text-align:center;color:var(--muted);font-size:0.95rem}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+
+    /* LIGHTBOX */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .18s}
+    .lightbox.show{opacity:1;pointer-events:auto}
+    .lightbox img{max-width:92%;max-height:92%;border-radius:8px}
+
+    /* PLAY overlay if autoplay blocked */
+    .play-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:999;border-radius:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));opacity:0;pointer-events:none;transition:opacity .25s}
+    .play-overlay.show{opacity:1;pointer-events:auto}
+    .play-btn{background:var(--nav-bg);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero-photo{max-width:320px;margin:0 auto}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      nav.main-nav{display:none}
+      .hamburger{display:flex}
+    }
+    @media (max-width:520px){
+      .gallery-grid img{height:180px}
+      .hero-title{font-size:1.8rem}
+      .hero-sub{font-size:0.96rem}
+      .section{padding:16px}
+    }
+
+    /* Print view for e-card only */
+    @media print {
+      header, footer, section:not(#ecard-section) {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+        color: #000;
+      }
+      #ecard-section {
+        box-shadow: none;
+        border: none;
+      }
+      #ecard-section button {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STICKY NAV -->
+  <header class="site-header" role="banner">
+    <div class="nav-inner">
+      <div class="brand"><span>Adebunmi</span> mi</div>
+
+      <!-- Desktop menu -->
+      <nav class="main-nav" role="navigation" aria-label="Main menu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#love">What I love</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#foryou">For you</a>
+      </nav>
+
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#love">What I love</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#foryou">For you</a>
+    </div>
+  </header>
+
+  <main class="wrap" id="home">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1 class="hero-title">Happy Birthday, Adebunmi mi 🎂🎁🎉❤️</h1>
+          <div class="hero-sub muted">October 28 — Made with love by Temidayo</div>
+
+          <!-- soft spotify embed (user can also play) -->
+          <div style="margin-top:14px;">
+            <!-- Spotify embed (visible) -->
+            <iframe id="spotifyEmbed" src="https://open.spotify.com/embed/track/2pbjOm6B6vn93zL4aXjKQW" width="300" height="80" frameborder="0" allow="encrypted-media" style="border-radius:10px"></iframe>
+            <div class="muted" style="margin-top:8px;font-size:0.9rem">Song: Number One — Ric Hassani.</div>
+          </div>
+        </div>
+
+        <div class="hero-photo" aria-hidden="false">
+          <!-- Put your main hero photo here: /images/bunmi9.jpg -->
+          <img src="images/abunm.jpg" alt="Adebunmi mi — hero photo">
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-labelledby="aboutHeading">
+      <h2 id="aboutHeading">About Adebunmi mi</h2>
+      <p>
+        Alabi Janet Adebunmi the ever-charming middle child of the Alabi family is a beautiful blend of brilliance, warmth, and grace.
+        She has a heart that radiates kindness and a smile that can brighten even the dullest day. Janet is driven by purpose and passion,
+        chasing her dreams fearlessly and making it all look effortless. she’s one to keep an eye on as she'll soon step into the tech world to begin her journey as a Product Manager,
+        one thing is certain: she’s destined to shine. Janet is not only one to watch but one to be deeply admired, a shining example of beauty, intelligence and purpose.
+      </p>
+    </section>
+
+    <!-- WHAT I LOVE -->
+    <section id="love" class="section" aria-labelledby="loveHeading">
+      <h2 id="loveHeading">What I love about you</h2>
+      <ul class="love-list" role="list">
+        <li>You can hold deep and intelligent conversations</li>
+        <li>You are ambitious and considerate</li>
+        <li>Your eyes and lips are simply mesmerizing 😍</li>
+        <li>You have the most beautiful smile</li>
+        <li>You are witty, kind, and effortlessly charming</li>
+        <li>I love that you love God</li>
+      </ul>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section" aria-labelledby="galleryHeading">
+      <h2 id="galleryHeading">Gallery</h2>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Upload images to images/ folder; replace filenames as necessary -->
+        <img src="images/abunm.jpg" alt="photo 1">
+        <img src="images/Janet.jpg" alt="photo 2">
+        <img src="images/aaad.jpg" alt="photo 3">
+        <img src="images/photo1.jpg" alt="photo 4">
+        <img src="images/photo2.jpg" alt="photo 5">
+        <img src="images/photo3.jpg" alt="photo 6">
+        <img src="images/photo4.jpg" alt="photo 7">
+        <img src="images/photo5.jpg" alt="photo 8">
+        <img src="images/photo6.jpg" alt="photo 9">
+        <img src="images/photo7.jpg" alt="photo 10">
+        <img src="images/photo8.jpg" alt="photo 11">
+        <img src="images/photo9.jpg" alt="photo 12">
+        <img src="images/photo10.jpg" alt="photo 12">
+        <img src="images/photo11.jpg" alt="photo 14">
+        <img src="images/photo12.jpg" alt="photo 15">
+      </div>
+      <div class="muted" style="margin-top:10px;font-size:0.92rem">Click any photo to enlarge and click on it to make it go away.</div>
+    </section>
+
+    <!-- FOR YOU (love note + poem + downloads) -->
+    <section id="foryou" class="section" aria-labelledby="foryouHeading">
+      <h2 id="foryouHeading">For You</h2>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+        <div>
+          <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid rgba(10,49,80,0.04)">
+            <strong>Love Note</strong>
+            <p style="margin-top:8px">
+              Adebunmi mi owon,<br><br>
+              I’m so happy to see you celebrate another wonderful year of your life. It’s been a year filled with ups and downs, but through it all, you’ve remained strong, focused, and full of determination. I love you even more for the amazing woman you are,  resilient, passionate, and purpose-driven.<br><br>
+              Today is all about you, my love. You have the most beautiful smile, and I pray it never fades. Keep smiling always, Adebunmi mi, because your smile truly brightens my world😘<br><br>
+              <strong>Happy birthday, my love ❤️</strong>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid rgba(10,49,80,0.04)">
+            <strong>Poem for you Adebunmi mi </strong>
+            <p style="margin-top:8px;white-space:pre-wrap">
+You are the scorpion
+Stinging my heart,
+A memory that never fades
+In time
+
+You have built a honey castle
+In my being which
+You have put together
+Like pieces of broken
+Portsheds mended 
+Into an angelic statue
+Of eternity with the secret
+Sweet poison of your love
+
+You are tempting 
+Candle lit with honey
+Dew  flaming at the bottom
+Of the stump
+Dancing on the mirage
+Of broken time  
+
+You who burn my eyes
+With lotus of your 
+Hypnotising gaze
+Transfixing my being
+
+You are my Judge
+Jailer, torturer, and executioner
+Carrying out an order
+From above.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- E-BIRTHDAY CARD EMBED (ADDED HERE) -->
+      <div id="ecard-section" style="margin-top:16px">
+        <div style="background:#fff;padding:16px;border-radius:10px;border:1px solid rgba(10,49,80,0.06)">
+          <h3 style="color:var(--nav-bg);margin-top:0">Your e-Birthday Card</h3>
+          <div id="ecard-container" style="margin-top:8px;">
+            <script type="text/javascript" src="https://app.ecardwidget.com/embed/widget/w67v8qd7qwn"></script>
+            <div id="ecardwidget_id_w67v8qd7qwn"></div>
+          </div>
+          <div style="text-align:center;margin-top:12px;">
+           
+          </div>
+        </div>
+      </div>
+      <!-- END E-BIRTHDAY CARD EMBED -->
+
+      <!-- Downloadable cards -->
+      
+        <div class="muted" style="margin-top:8px">  </div>
+      </div>
+    </section>
+
+     <footer style="background-color: #0a3150; color: white; text-align: center; padding: 10px;">
+             Made with love by Temidayo 💕 — October 28, 2025
+     </footer>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img src="" alt="enlarged photo" id="lightboxImg">
+  </div>
+
+  <!-- PLAY overlay (shows if browser blocks autoplay) -->
+ 
+
+  <!-- Optional local audio file (recommended): place an MP3 at /audio/number_one.mp3 for best autoplay behavior.
+       The Spotify embed will be present regardless for manual playback. -->
+  <audio id="localAudio" loop preload="auto" style="display:none">
+    <source src="audio/number_one.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Hamburger toggle
+    const hamb = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamb.addEventListener('click', () => {
+      const visible = mobileMenu.style.display === 'block';
+      mobileMenu.style.display = visible ? 'none' : 'block';
+      mobileMenu.setAttribute('aria-hidden', visible ? 'true' : 'false');
+    });
+
+    // Lightbox logic
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    document.querySelectorAll('.gallery-grid img').forEach(img=>{
+      img.addEventListener('click', (e)=>{
+        lbImg.src = e.currentTarget.src;
+        lightbox.classList.add('show');
+        lightbox.setAttribute('aria-hidden','false');
+      });
+    });
+    lightbox.addEventListener('click', ()=> {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden','true');
+    });
+
+    // Soft background music attempt:
+    // Priority: local MP3 (audio/number_one.mp3) if present — we can fade it in.
+    // If not present, user can play the Spotify embed manually.
+    const localAudio = document.getElementById('localAudio');
+    const playOverlay = document.getElementById('playOverlay');
+    const startAll = document.getElementById('startAll');
+
+    function tryPlayLocal() {
+      if(!localAudio) return Promise.reject('no-audio');
+      // start silent then fade-in
+      try {
+        localAudio.volume = 0;
+        const playPromise = localAudio.play();
+        if (playPromise !== undefined) {
+          return playPromise.then(()=> {
+            // fade in
+            let v = 0;
+            const id = setInterval(()=> {
+              v = Math.min(0.8, v + 0.02);
+              localAudio.volume = v;
+              if(v >= 0.8) clearInterval(id);
+            }, 200);
+            return Promise.resolve('played');
+          }).catch((e)=>{
+            return Promise.reject(e);
+          });
+        } else {
+          return Promise.reject('no-promise');
+        }
+      } catch(e) {
+        return Promise.reject(e);
+      }
+    }
+
+    // On load, attempt autoplay silently; if blocked, show overlay so user can interact once.
+    window.addEventListener('load', ()=> {
+      // Small delay then try
+      setTimeout(()=>{
+        tryPlayLocal().then(()=> {
+          // played — hide overlay if any
+          playOverlay.classList.remove('show');
+        }).catch(()=>{
+          // couldn't autoplay — reveal overlay prompt
+          playOverlay.classList.add('show');
+          playOverlay.setAttribute('aria-hidden','false');
+        });
+      }, 700);
+    });
+
+    // When user clicks overlay button, try to play local audio and open Spotify track in new tab
+    startAll.addEventListener('click', ()=>{
+      tryPlayLocal().catch(()=>{ /* ignore */ });
+      // open spotify track in new tab (user gesture enables playback there)
+      window.open('https://open.spotify.com/track/2pbjOm6B6vn93zL4aXjKQW','_blank');
+      playOverlay.classList.remove('show');
+      playOverlay.setAttribute('aria-hidden','true');
+    });
+
+    // Smooth scrolling for anchor links (nav)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        // close mobile menu if open
+        if(window.innerWidth <= 980){ mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); }
+        // default smooth scroll will handle it
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
